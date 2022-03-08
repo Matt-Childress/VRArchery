@@ -25,6 +25,15 @@ public class Bow : XRGrabInteractable
     //position arrow should snap to when nocked
     private Vector3 shelfedArrowPosition = new Vector3(-0.44f, 0f, 0f);
 
+    //constant base arrow power (negative for velocity direction)
+    private const float baseArrowPower = -3000f;
+
+    //constant distance that arrow should remain from the nock
+    private const float nockedArrowDistanceOffset = 0.65f;
+    
+    //track the distance the bow is pulled back
+    private float drawLength;
+
     private void Start()
     {
         //grab resting bowstring position
@@ -41,8 +50,8 @@ public class Bow : XRGrabInteractable
             nockPoint.transform.position = stringHand.transform.position;
 
             //update arrow position based on the string pull distance
-            float distance = Vector3.Distance(nockPoint.transform.position, transform.position);
-            arrow.localPosition = new Vector3(distance - 0.65f, 0f, 0f);
+            drawLength = Vector3.Distance(nockPoint.transform.position, transform.position);
+            arrow.localPosition = new Vector3(drawLength - nockedArrowDistanceOffset, 0f, 0f);
         }
     }
 
@@ -123,8 +132,10 @@ public class Bow : XRGrabInteractable
         arrow.trackRotation = true;
         arrow.trackPosition = true;
 
-        //add the force that shoots the arrow
-        arrowRB.AddForce(arrowRB.transform.right * -1500);
+        //calculate the shot force based on draw length
+        float shotPower = drawLength * baseArrowPower;
+        //add the force in the direction to shoot the arrow
+        arrowRB.AddForce(arrowRB.transform.right * shotPower);
     }
 
     private void ReleaseString()
