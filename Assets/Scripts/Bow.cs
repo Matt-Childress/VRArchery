@@ -101,14 +101,14 @@ public class Bow : XRGrabInteractable
     public void Nock(Hand arrowHand)
     {
         //reference to grab interactable
-        XRGrabInteractable arrowInteractable = arrowHand.heldObject;
+        XRGrabInteractable arrowGI = arrowHand.heldObject;
 
         //set the interactable tracking off so that we can manually position and rotate the arrow respective to the bow
-        arrowInteractable.trackRotation = false;
-        arrowInteractable.trackPosition = false;
+        arrowGI.trackRotation = false;
+        arrowGI.trackPosition = false;
 
         //parent the arrow to the bow and reset its transform to follow the bow
-        arrow = arrowInteractable.transform;
+        arrow = arrowGI.transform;
         arrow.parent = transform;
         arrow.localPosition = shelfedArrowPosition;
         arrow.localRotation = Quaternion.identity;
@@ -126,12 +126,6 @@ public class Bow : XRGrabInteractable
         //release the string
         ReleaseString();
 
-        //unset the arrow local tracking variables
-        XRGrabInteractable arrow = arrowRB.GetComponent<XRGrabInteractable>();
-        arrow.transform.parent = null;
-        arrow.trackRotation = true;
-        arrow.trackPosition = true;
-
         //calculate the shot force based on draw length
         float shotPower = drawLength * baseArrowPower;
         //add the force in the direction to shoot the arrow
@@ -140,6 +134,15 @@ public class Bow : XRGrabInteractable
 
     private void ReleaseString()
     {
+        //if there's an arrow on the string, unset the arrow local tracking variables and seperate the arrow from the bow
+        if (arrow)
+        {
+            XRGrabInteractable arrowGI = arrow.GetComponent<XRGrabInteractable>();
+            arrowGI.transform.parent = null;
+            arrowGI.trackRotation = true;
+            arrowGI.trackPosition = true;
+        }
+
         //child the nockPoint back to the bow object
         nockPoint.transform.SetParent(originalNockParent);
         nockPoint.transform.localPosition = originalNockPosition;
