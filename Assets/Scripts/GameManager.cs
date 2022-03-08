@@ -19,16 +19,20 @@ public class GameManager : MonoBehaviour
     {
         //check if the bow is in one hand, and the arrow is in the other. if so then the arrow can be put on the string
 
+        Bow bow = null;
+
         //if the arrow is in the left hand and the right hand is holding the bow
         if (hand.side == HandSide.Left && rightHand.heldObject != null && rightHand.heldObject is Bow)
         {
-            (rightHand.heldObject as Bow).Nock(hand.heldObject.attachTransform); //nock
+            bow = rightHand.heldObject as Bow; //bow is in the right hand
         }
         //if the arrow is in the right hand and the left hand is holding the bow
         else if (hand.side == HandSide.Right && leftHand.heldObject != null && leftHand.heldObject is Bow)
         {
-            (leftHand.heldObject as Bow).Nock(hand.heldObject.attachTransform); //nock
+            bow = leftHand.heldObject as Bow; //bow is in the left hand
         }
+
+        bow.Nock(hand); //put arrow on bow
     }
 
     public void TryShoot(Hand hand)
