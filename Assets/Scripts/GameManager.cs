@@ -22,12 +22,12 @@ public class GameManager : MonoBehaviour
         Bow bow = null;
 
         //if the arrow is in the left hand and the right hand is holding the bow
-        if (hand.side == HandSide.Left && rightHand.heldObject != null && rightHand.heldObject is Bow)
+        if (hand == leftHand && rightHand.heldObject != null && rightHand.heldObject is Bow)
         {
             bow = rightHand.heldObject as Bow; //bow is in the right hand
         }
         //if the arrow is in the right hand and the left hand is holding the bow
-        else if (hand.side == HandSide.Right && leftHand.heldObject != null && leftHand.heldObject is Bow)
+        else if (hand == rightHand && leftHand.heldObject != null && leftHand.heldObject is Bow)
         {
             bow = leftHand.heldObject as Bow; //bow is in the left hand
         }
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     public void TryShoot(Hand hand)
     {
         //checking bow hand
-        Bow bow = hand.side == HandSide.Left ? rightHand.heldObject as Bow : leftHand.heldObject as Bow;
+        Bow bow = hand == leftHand ? rightHand.heldObject as Bow : leftHand.heldObject as Bow;
         //get arrow rigidbody for shot force application
         Rigidbody arrow = hand.heldObject != null ? hand.heldObject.GetComponent<Rigidbody>() : null;
 

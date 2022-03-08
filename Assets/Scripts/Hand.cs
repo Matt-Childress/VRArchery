@@ -5,9 +5,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class Hand : MonoBehaviour
 {
-    //left or right hand
-    public HandSide side;
-
     //the object held by this hand
     [HideInInspector]
     public XRGrabInteractable heldObject;
