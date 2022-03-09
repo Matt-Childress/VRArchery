@@ -581,7 +581,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d66477fa6e2f5c440aa2b73a607d9aa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  side: 1
   heldObject: {fileID: 0}
   xrController: {fileID: 0}
 --- !u!135 &541096552
@@ -676,6 +675,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d07fce57c762e68498432c421d35a625, type: 3}
+--- !u!1 &597676426 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d07fce57c762e68498432c421d35a625,
+    type: 3}
+  m_PrefabInstance: {fileID: 597676425}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &597676427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 597676426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac7e7e82d587de4ab560c71a0ecd074, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &599916901
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,7 +1343,7 @@ GameObject:
   - component: {fileID: 1672175271}
   m_Layer: 0
   m_Name: ArrowInteractable
-  m_TagString: Untagged
+  m_TagString: Arrow
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1340,7 +1357,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1672175270}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
+  m_Script: {fileID: 11500000, guid: 06ddddc2c6e7fdb40b313e02460b18f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 1164486408}
@@ -1446,6 +1463,8 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
+  rB: {fileID: 0}
+  arrowCollider: {fileID: 0}
 --- !u!54 &1672175272
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2033,7 +2052,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d66477fa6e2f5c440aa2b73a607d9aa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  side: 0
   heldObject: {fileID: 0}
   xrController: {fileID: 0}
 --- !u!135 &1728657562

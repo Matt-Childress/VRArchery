@@ -128,6 +128,10 @@ public class Bow : XRGrabInteractable
 
         //calculate the shot force based on draw length
         float shotPower = drawLength * baseArrowPower;
+
+        //set arrow not kinematic so shot physics work
+        arrowRB.isKinematic = false;
+
         //add the force in the direction to shoot the arrow
         arrowRB.AddForce(arrowRB.transform.right * shotPower);
     }
