@@ -6,6 +6,7 @@ TagManager:
   tags:
   - NockPoint
   - Arrow
+  - Quiver
   layers:
   - Default
   - TransparentFX

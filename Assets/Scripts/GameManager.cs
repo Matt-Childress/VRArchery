@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class GameManager : MonoBehaviour
     
     public Hand leftHand;
     public Hand rightHand;
+
+    public XRGrabInteractable arrowPrefab; //reference to arrows to instantiate from quiver
 
     private void Awake()
     {
@@ -32,7 +35,10 @@ public class GameManager : MonoBehaviour
             bow = leftHand.heldObject as Bow; //bow is in the left hand
         }
 
-        bow.Nock(hand); //put arrow on bow
+        if (bow) //null check
+        {
+            bow.Nock(hand); //put arrow on bow
+        }
     }
 
     public void TryShoot(Hand hand)

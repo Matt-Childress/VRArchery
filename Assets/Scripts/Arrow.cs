@@ -3,16 +3,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class Arrow : XRGrabInteractable
 {
-    [HideInInspector]
+    //public variables to set in the editor for arrow prefab
     public Rigidbody rB;
-    private Collider arrowCollider;
-
-    private void Start()
-    {
-        //grab rigidbody and collider references
-        rB = GetComponent<Rigidbody>();
-        arrowCollider = GetComponent<Collider>();
-    }
+    public Collider arrowCollider;
 
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
