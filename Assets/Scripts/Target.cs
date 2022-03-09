@@ -15,11 +15,10 @@ public class Target : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        GameObject gO = collision.gameObject;
-        if(gO.tag.Equals("Arrow"))
+        if(collision.collider.tag.Equals("Arrow"))
         {
             //when an arrow collides with the target, freeze it by setting the arrow to kinematic
-            gO.GetComponent<Arrow>().rB.isKinematic = true;
+            collision.gameObject.GetComponent<Arrow>().rB.isKinematic = true;
 
             //if the player is behind the distance marker
             if (Vector3.Distance(transform.position, playerTransform.position) > Vector3.Distance(transform.position, minDistanceMarkerTransform.position))

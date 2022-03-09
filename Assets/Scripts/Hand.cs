@@ -14,17 +14,18 @@ public class Hand : MonoBehaviour
     //reference to the xr interactor
     [HideInInspector]
     public XRBaseInteractor xrInteractor;
-    //reference to the xr pointer
-    private XRInteractorLineVisual lineVisual;
     //reference to the xr controller
     private XRController xRController;
+
+    //reference to the xr pointer
+    private XRInteractorLineVisual lineVisual;
 
     //hold reference to gamemanager instance
     private GameManager gm;
 
     //quiver hand tracking flags
     private bool handInQuiver;
-    private bool quiverArrow;
+    private bool quiverArrowGrabbed;
 
     private void Start()
     {
@@ -39,30 +40,28 @@ public class Hand : MonoBehaviour
 
     private void Update()
     {
-        //manually start and end instantiated arrow interactions in update
+        //manually start and end newly instantiated arrow interactions in update
         if(handInQuiver && heldObject == null)
         {
-            bool pressed;
-            xRController.inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out pressed); //manually getting grip button
+            xRController.inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool pressed); //manually getting grip button
 
             if (pressed) //spawn an arrow and handle xr interaction
             {
-                quiverArrow = true;
+                quiverArrowGrabbed = true;
                 IXRSelectInteractable arrowGI = Instantiate(gm.arrowPrefab);
                 xrInteractor.StartManualInteraction(arrowGI);
                 heldObject = arrowGI as XRGrabInteractable;
                 lineVisual.enabled = false;
             }
         }
-        else if(quiverArrow) //if currently grabbing a spawned quiver arrow
+        else if(quiverArrowGrabbed) //if currently grabbing a spawned quiver arrow
         {
-            bool pressed;
-            xRController.inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out pressed); //manually getting grip button
+            xRController.inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool pressed); //manually getting grip button
 
-            if(!pressed)
+            if (!pressed)
             {
                 //end the interaction and stop tracking the arrow
-                quiverArrow = false;
+                quiverArrowGrabbed = false;
                 xrInteractor.EndManualInteraction();
                 lineVisual.enabled = true;
                 heldObject = null;
@@ -79,7 +78,7 @@ public class Hand : MonoBehaviour
 
     public void DroppedObject()
     {
-        //see if a shot should be performed
+        //handle dropping an arrow
         if(heldObject is Arrow)
         {
             //try to shoot the arrow
@@ -93,7 +92,7 @@ public class Hand : MonoBehaviour
             }
         }
 
-        //handle an object being dropped
+        //handle any object being dropped
         heldObject = null;
         lineVisual.enabled = true; //if the hand has no object, turn on the pointer line
     }
@@ -113,7 +112,7 @@ public class Hand : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //handling when an arrow is placed on the string
-        if (other.tag.Equals("NockPoint") && heldObject != null && !(heldObject is Bow))
+        if (other.tag.Equals("NockPoint") && heldObject != null && heldObject is Arrow)
         {
             //disable the nock point collider so it doesn't interfere with shot physics
             other.enabled = false;

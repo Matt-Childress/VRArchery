@@ -5,15 +5,15 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class Bow : XRGrabInteractable
 {
-    //the bow's collider
-    private Collider bowCollider;
-
     //the middle of the bowstring
     public Collider nockPoint;
 
     //string Hand for positioning/rotating
     [HideInInspector]
     public Transform stringHand;
+
+    //the bow's collider
+    private Collider bowCollider;
 
     //for rotating the bow relative to both hands
     private Quaternion attachIntialRotation;
