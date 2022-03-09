@@ -5,8 +5,11 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class Bow : XRGrabInteractable
 {
+    //the bow's collider
+    private Collider bowCollider;
+
     //the middle of the bowstring
-    public Transform nockPoint;
+    public Collider nockPoint;
 
     //string Hand for positioning/rotating
     [HideInInspector]
@@ -36,6 +39,9 @@ public class Bow : XRGrabInteractable
 
     private void Start()
     {
+        //grab bow collider reference
+        bowCollider = GetComponent<Collider>();
+
         //grab resting bowstring position
         originalNockPosition = nockPoint.transform.localPosition;
         originalNockParent = nockPoint.transform.parent;
@@ -77,6 +83,9 @@ public class Bow : XRGrabInteractable
     
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
+        //disable the bow collider so it doesn't interfere with arrow shots
+        bowCollider.enabled = false;
+
         //when bow is picked up, set the initial rotation offset of the attach object
         attachIntialRotation = (args.interactorObject as XRBaseInteractor).attachTransform.localRotation;
         base.OnSelectEntered(args);
@@ -84,8 +93,14 @@ public class Bow : XRGrabInteractable
 
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
+        //re enable the bow collider so it can be picked up
+        bowCollider.enabled = true;
+
         //drop the bow
         ReleaseString();
+
+        //reenable the nock point so arrows can be nocked
+        nockPoint.enabled = true;
 
         //set attach object back to original rotation
         (args.interactorObject as XRBaseInteractor).attachTransform.localRotation = attachIntialRotation;
@@ -129,11 +144,18 @@ public class Bow : XRGrabInteractable
         //calculate the shot force based on draw length
         float shotPower = drawLength * baseArrowPower;
 
+        //zero out arrow's forces for a stable shot
+        arrowRB.velocity = Vector3.zero;
+        arrowRB.angularVelocity = Vector3.zero;
+
         //set arrow not kinematic so shot physics work
         arrowRB.isKinematic = false;
 
         //add the force in the direction to shoot the arrow
         arrowRB.AddForce(arrowRB.transform.right * shotPower);
+
+        //reenable the nock point so arrows can be nocked
+        nockPoint.enabled = true;
     }
 
     private void ReleaseString()

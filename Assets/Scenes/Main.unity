@@ -1464,7 +1464,6 @@ MonoBehaviour:
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
   rB: {fileID: 0}
-  arrowCollider: {fileID: 0}
 --- !u!54 &1672175272
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2212,7 +2211,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 1164486408}
-  m_Colliders: []
+  m_Colliders:
+  - {fileID: 1979352237}
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -2314,7 +2314,7 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
-  nockPoint: {fileID: 329247461}
+  nockPoint: {fileID: 329247462}
   stringHand: {fileID: 0}
 --- !u!54 &1979352236
 Rigidbody:

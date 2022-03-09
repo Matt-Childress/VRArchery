@@ -64,6 +64,10 @@ public class Hand : MonoBehaviour
         //handling when an arrow is placed on the string
         if (other.tag.Equals("NockPoint") && heldObject != null && !(heldObject is Bow))
         {
+            //disable the nock point collider so it doesn't interfere with shot physics
+            other.enabled = false;
+
+            //try to nock an arrow
             gm.TryNock(this);
         }
     }
