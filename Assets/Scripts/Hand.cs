@@ -11,11 +11,13 @@ public class Hand : MonoBehaviour
     [HideInInspector]
     public XRGrabInteractable heldObject;
 
-    //reference to the xr controller
+    //reference to the xr interactor
     [HideInInspector]
-    public XRBaseInteractor xrController;
+    public XRBaseInteractor xrInteractor;
     //reference to the xr pointer
     private XRInteractorLineVisual lineVisual;
+    //reference to the xr controller
+    private XRController xRController;
 
     //hold reference to gamemanager instance
     private GameManager gm;
@@ -27,8 +29,9 @@ public class Hand : MonoBehaviour
     private void Start()
     {
         //set references to xr components
-        xrController = GetComponent<XRBaseInteractor>();
         lineVisual = GetComponent<XRInteractorLineVisual>();
+        xRController = GetComponent<XRController>();
+        xrInteractor = GetComponent<XRBaseInteractor>();
 
         //local ref to GM
         gm = GameManager.instance;
@@ -40,13 +43,13 @@ public class Hand : MonoBehaviour
         if(handInQuiver && heldObject == null)
         {
             bool pressed;
-            GetComponent<XRController>().inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out pressed); //manually getting grip button
+            xRController.inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out pressed); //manually getting grip button
 
             if (pressed) //spawn an arrow and handle xr interaction
             {
                 quiverArrow = true;
                 IXRSelectInteractable arrowGI = Instantiate(gm.arrowPrefab);
-                xrController.StartManualInteraction(arrowGI);
+                xrInteractor.StartManualInteraction(arrowGI);
                 heldObject = arrowGI as XRGrabInteractable;
                 lineVisual.enabled = false;
             }
@@ -54,13 +57,13 @@ public class Hand : MonoBehaviour
         else if(quiverArrow) //if currently grabbing a spawned quiver arrow
         {
             bool pressed;
-            GetComponent<XRController>().inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out pressed); //manually getting grip button
+            xRController.inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out pressed); //manually getting grip button
 
             if(!pressed)
             {
                 //end the interaction and stop tracking the arrow
                 quiverArrow = false;
-                xrController.EndManualInteraction();
+                xrInteractor.EndManualInteraction();
                 heldObject = null;
                 lineVisual.enabled = true;
             }
@@ -90,7 +93,7 @@ public class Hand : MonoBehaviour
     private XRGrabInteractable GetHeldObject()
     {
         //retrieve the object being held or null if no object is held
-        List<IXRSelectInteractable> interactables = xrController.interactablesSelected;
+        List<IXRSelectInteractable> interactables = xrInteractor.interactablesSelected;
         if(interactables.Count > 0)
         {
             return interactables[0] as XRGrabInteractable;
@@ -116,7 +119,7 @@ public class Hand : MonoBehaviour
             handInQuiver = true;
             try
             {
-                (xrController as XRBaseControllerInteractor).SendHapticImpulse(0.5f, 0.1f);
+                (xrInteractor as XRBaseControllerInteractor).SendHapticImpulse(0.5f, 0.1f);
             }
             catch(Exception e)
             {
