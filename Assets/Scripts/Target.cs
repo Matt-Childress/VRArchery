@@ -9,6 +9,10 @@ public class Target : MonoBehaviour
     //track the number of hits
     private int hits;
 
+    //transforms for judging if player is too close
+    public Transform playerTransform;
+    public Transform minDistanceMarkerTransform;
+
     private void OnCollisionEnter(Collision collision)
     {
         GameObject gO = collision.gameObject;
@@ -17,9 +21,17 @@ public class Target : MonoBehaviour
             //when an arrow collides with the target, freeze it by setting the arrow to kinematic
             gO.GetComponent<Arrow>().rB.isKinematic = true;
 
-            //increment hit count
-            hits++;
-            UpdateScoreText();
+            //if the player is behind the distance marker
+            if (Vector3.Distance(transform.position, playerTransform.position) > Vector3.Distance(transform.position, minDistanceMarkerTransform.position))
+            {
+                //increment hit count
+                hits++;
+                UpdateScoreText();
+            }
+            else //if the player is in front of the distance marker
+            {
+                DisplayTooCloseMessage();
+            }
         }
     }
 
@@ -27,5 +39,13 @@ public class Target : MonoBehaviour
     {
         //display hits
         scoreText.text = "Hits: " + hits.ToString();
+        scoreText.color = Color.green;
+    }
+
+    private void DisplayTooCloseMessage()
+    {
+        //display that the player is too close to the target
+        scoreText.text = "TOO CLOSE!";
+        scoreText.color = Color.red;
     }
 }
