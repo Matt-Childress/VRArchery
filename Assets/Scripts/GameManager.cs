@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void TryShoot(Hand hand)
+    public bool TryShoot(Hand hand)
     {
         //checking bow hand
         Bow bow = hand == leftHand ? rightHand.heldObject as Bow : leftHand.heldObject as Bow;
@@ -52,6 +52,10 @@ public class GameManager : MonoBehaviour
         if (bow != null && arrow != null && bow.stringHand)
         {
             bow.Shoot(arrow); //shoot
+            return true;
         }
+
+        //return false if no shot was made
+        return false;
     }
 }

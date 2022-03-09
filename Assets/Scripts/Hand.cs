@@ -64,8 +64,8 @@ public class Hand : MonoBehaviour
                 //end the interaction and stop tracking the arrow
                 quiverArrow = false;
                 xrInteractor.EndManualInteraction();
-                heldObject = null;
                 lineVisual.enabled = true;
+                heldObject = null;
             }
         }
     }
@@ -80,9 +80,17 @@ public class Hand : MonoBehaviour
     public void DroppedObject()
     {
         //see if a shot should be performed
-        if(!(heldObject is Bow))
+        if(heldObject is Arrow)
         {
-            gm.TryShoot(this);
+            //try to shoot the arrow
+            if (!gm.TryShoot(this))
+            {
+                //if a shot wasn't made and the arrow is in the quiver
+                if (handInQuiver)
+                {
+                    Destroy(heldObject.gameObject); //destroy the arrow to "put away"
+                }
+            }
         }
 
         //handle an object being dropped
